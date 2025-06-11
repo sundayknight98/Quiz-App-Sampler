@@ -1,15 +1,20 @@
-import 'package:adv_basics/data/questions.dart';
 import 'package:flutter/material.dart';
-import 'package:adv_basics/questions_summary.dart';
+
+import 'package:adv_basics/data/questions.dart';
+import 'package:adv_basics/questions_summary/questions_summary.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen({super.key, required this.chosenAnswers});
+  const ResultsScreen({
+    super.key,
+    required this.chosenAnswers,
+    required this.onRestart,
+  });
 
   final void Function() onRestart;
   final List<String> chosenAnswers;
 
-  List<Map<String, Object>> getSummaryData() {
+  List<Map<String, Object>> get summaryData {
     final List<Map<String, Object>> summary = [];
 
     for (var i = 0; i < chosenAnswers.length; i++) {
@@ -26,11 +31,10 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final summaryData = getSummaryData();
     final numTotalQuestions = questions.length;
-    final numCorrectQuestions = summaryData.where((data) {
-      return data['user_answer'] == data['correct_answer'];
-    }).length;
+    final numCorrectQuestions = summaryData
+        .where((data) => data['user_answer'] == data['correct_answer'])
+        .length;
 
     return SizedBox(
       width: double.infinity,
@@ -55,7 +59,7 @@ class ResultsScreen extends StatelessWidget {
               onPressed: onRestart,
               style: TextButton.styleFrom(foregroundColor: Colors.white),
               icon: const Icon(Icons.refresh),
-              label: const Text('Restart Quiz'),
+              label: const Text('Restart Quiz!'),
             ),
           ],
         ),
